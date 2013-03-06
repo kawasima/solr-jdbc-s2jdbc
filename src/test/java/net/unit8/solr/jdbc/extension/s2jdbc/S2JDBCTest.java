@@ -5,12 +5,15 @@ import net.unit8.solr.jdbc.extension.s2jdbc.service.PlayerService;
 import org.seasar.extension.jdbc.JdbcManager;
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.framework.util.tiger.CollectionsUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.transaction.UserTransaction;
 import java.util.List;
 
 
 public class S2JDBCTest extends S2TestCase {
+    private static final Logger logger = LoggerFactory.getLogger(S2JDBCTest.class);
 	PlayerService playerService;
 	JdbcManager jdbcManager;
 	UserTransaction userTransaction;
@@ -25,6 +28,7 @@ public class S2JDBCTest extends S2TestCase {
 		try {
 			jdbcManager.updateBySql("DROP TABLE PLAYER").execute();
 		} catch(Exception ignore) {
+            logger.warn("Drop failure", ignore);
 		}
 		jdbcManager.updateBySql("CREATE TABLE PLAYER(PLAYER_ID number, TEAM varchar(10), PLAYER_NAME varchar(50), POSITION varchar(10) ARRAY, REGISTERED_AT DATE)").execute();
 		Player player1 = new Player();
@@ -67,7 +71,7 @@ public class S2JDBCTest extends S2TestCase {
 		try {
 			jdbcManager.updateBySql("DROP TABLE PLAYER").execute();
 		} catch(Exception ignore) {
-
+            logger.warn("Drop failure", ignore);
 		}
 		jdbcManager.updateBySql("CREATE TABLE PLAYER(PLAYER_ID number, TEAM varchar(10), PLAYER_NAME varchar(50), POSITION varchar(10) ARRAY, REGISTERED_AT DATE)").execute();
 		Player player1 = new Player();
@@ -80,7 +84,7 @@ public class S2JDBCTest extends S2TestCase {
 		userTransaction.begin();
 		playerService.insert(player1);
 
-		Player player2 = new Player();
+        Player player2 = new Player();
 		player2.playerId = 2;
 		player2.playerName = "山崎隆造";
 		player2.team = "カープ";
