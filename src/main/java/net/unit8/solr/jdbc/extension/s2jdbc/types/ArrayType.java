@@ -1,15 +1,10 @@
 package net.unit8.solr.jdbc.extension.s2jdbc.types;
 
-import java.sql.Array;
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
-
 import org.apache.commons.lang.StringUtils;
 import org.seasar.extension.jdbc.types.AbstractValueType;
 import org.seasar.extension.jdbc.util.BindVariableUtil;
+
+import java.sql.*;
 
 public class ArrayType extends AbstractValueType {
 	public ArrayType() {
@@ -22,7 +17,7 @@ public class ArrayType extends AbstractValueType {
 		if(array == null) {
 			return null;
 		}
-		return (Object[])array.getArray();
+		return array.getArray();
 	}
 	
 	@Override
@@ -32,7 +27,7 @@ public class ArrayType extends AbstractValueType {
 		if (array == null) {
 			return null;
 		}
-		return (Object[])array.getArray();
+		return array.getArray();
 	}
 	
 	@Override

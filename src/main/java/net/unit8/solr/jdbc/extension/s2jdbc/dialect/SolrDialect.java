@@ -2,10 +2,12 @@ package net.unit8.solr.jdbc.extension.s2jdbc.dialect;
 
 import net.unit8.solr.jdbc.extension.s2jdbc.types.ArrayType;
 import net.unit8.solr.jdbc.extension.s2jdbc.types.ListType;
+import net.unit8.solr.jdbc.message.ErrorCode;
 import org.seasar.extension.jdbc.ValueType;
 import org.seasar.extension.jdbc.dialect.StandardDialect;
 
 import javax.persistence.GenerationType;
+import java.sql.SQLException;
 import java.util.List;
 
 public class SolrDialect extends StandardDialect {
@@ -65,8 +67,7 @@ public class SolrDialect extends StandardDialect {
 
     @Override
     public boolean isUniqueConstraintViolation(Throwable t) {
-    	// TODO implementation
-        return false;
+        return (((SQLException)t).getErrorCode() == ErrorCode.DUPLICATE_KEY_1);
     }
 
     @Override
