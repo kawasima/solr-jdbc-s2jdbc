@@ -30,7 +30,10 @@ public class S2JDBCTest extends S2TestCase {
 		} catch(Exception ignore) {
             logger.warn("Drop failure", ignore);
 		}
-		jdbcManager.updateBySql("CREATE TABLE PLAYER(PLAYER_ID number, TEAM varchar(10), PLAYER_NAME varchar(50), POSITION varchar(10) ARRAY, REGISTERED_AT DATE)").execute();
+		jdbcManager.updateBySql(
+                "CREATE TABLE PLAYER(" +
+                        "PLAYER_ID number, TEAM varchar(10), PLAYER_NAME varchar(50), " +
+                        "POSITION varchar(10) ARRAY, DESCRIPTION TEXT, REGISTERED_AT DATE)").execute();
 		Player player1 = new Player();
 		player1.playerId = 1;
 		player1.playerName = "高橋慶彦";
@@ -38,6 +41,7 @@ public class S2JDBCTest extends S2TestCase {
 		player1.position = CollectionsUtil.newArrayList();
 		player1.position.add("二塁手");
 		player1.position.add("遊撃手");
+        player1.description = "高橋は、スイッチヒッターとして打率3割を5度、20本塁打以上を4度記録し、33試合連続安打という日本記録まで樹立した。この成功により、一躍日本球界にスイッチヒッターの有効性が知れ渡ることとなり、後進に計り知れない影響を及ぼした。";
 		userTransaction.begin();
 		playerService.insert(player1);
 
@@ -46,6 +50,7 @@ public class S2JDBCTest extends S2TestCase {
 		player2.playerName = "山崎隆造";
 		player2.team = "カープ";
 		player2.position = null;
+        player2.description = "崇徳高校では3年春の甲子園で優勝（現・早稲田大学野球部監督の應武篤良は同期でチームメイト）。超高校級の遊撃手と騒がれ、1976年ドラフト1位で広島東洋カープに入団。";
 		playerService.insert(player2);
 		userTransaction.commit();
 
@@ -73,7 +78,10 @@ public class S2JDBCTest extends S2TestCase {
 		} catch(Exception ignore) {
             logger.warn("Drop failure", ignore);
 		}
-		jdbcManager.updateBySql("CREATE TABLE PLAYER(PLAYER_ID number, TEAM varchar(10), PLAYER_NAME varchar(50), POSITION varchar(10) ARRAY, REGISTERED_AT DATE)").execute();
+		jdbcManager.updateBySql(
+                "CREATE TABLE PLAYER(" +
+                        "PLAYER_ID number, TEAM varchar(10), PLAYER_NAME varchar(50), " +
+                        "POSITION varchar(10) ARRAY, DESCRIPTION TEXT, REGISTERED_AT DATE)").execute();
 		Player player1 = new Player();
 		player1.playerId = 1;
 		player1.playerName = "高橋慶彦";
