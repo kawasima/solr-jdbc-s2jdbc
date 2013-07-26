@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.transaction.UserTransaction;
+import java.util.Date;
 import java.util.List;
 
 
@@ -42,6 +43,8 @@ public class S2JDBCTest extends S2TestCase {
 		player1.position.add("二塁手");
 		player1.position.add("遊撃手");
         player1.description = "高橋は、スイッチヒッターとして打率3割を5度、20本塁打以上を4度記録し、33試合連続安打という日本記録まで樹立した。この成功により、一躍日本球界にスイッチヒッターの有効性が知れ渡ることとなり、後進に計り知れない影響を及ぼした。";
+        Date now = new Date();
+        player1.registeredAt = now;
 		userTransaction.begin();
 		playerService.insert(player1);
 
@@ -58,7 +61,9 @@ public class S2JDBCTest extends S2TestCase {
 		assertEquals(2, playerList.size());
 		Player player = playerList.get(0);
 		assertEquals("Entityに値が入っている", "高橋慶彦", player.playerName);
-		assertNull("設定しなかったところはnullが入る", player.registeredAt);
+		assertEquals("日付が一致すること", now.getYear(), player.registeredAt.getYear());
+        assertEquals("日付が一致すること", now.getMonth(), player.registeredAt.getMonth());
+        assertEquals("日付が一致すること", now.getDate(), player.registeredAt.getDate());
 
 		player.playerName = "野村謙二郎";
 		userTransaction.begin();
