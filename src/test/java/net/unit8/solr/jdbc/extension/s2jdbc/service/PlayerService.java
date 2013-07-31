@@ -38,4 +38,30 @@ public class PlayerService extends S2AbstractService<Player> {
 		return selectBySqlFile(Player.class,"findPosition.sql", conditions).getResultList();
 	}
 
+    public List<Player> findByDescription(String description) {
+        return select()
+                .where(contains(new PropertyName<String>("description"), description))
+                .getResultList();
+    }
+
+    public List<Player> findByNameStartsWith(String nameStarts) {
+        return select()
+                .where(starts(new PropertyName<String>("playerName"), nameStarts))
+                .getResultList();
+    }
+
+    /** This method throws exception. */
+    public List<Player> findByDescriptionStarts(String description) {
+        return select()
+                .where(starts(new PropertyName<String>("description"), description))
+                .getResultList();
+    }
+
+    /** This method throws exception. */
+    public List<Player> findByNameContains(String nameStarts) {
+        return select()
+                .where(contains(new PropertyName<String>("playerName"), nameStarts))
+                .getResultList();
+    }
+
 }

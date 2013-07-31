@@ -25,7 +25,8 @@ public class S2JDBCTest extends S2TestCase {
 	}
 
 
-	public void testSearchSimple() throws Exception {
+	@SuppressWarnings("deprecation")
+    public void testSearchSimple() throws Exception {
 		try {
 			jdbcManager.updateBySql("DROP TABLE PLAYER").execute();
 		} catch(Exception ignore) {
@@ -53,7 +54,7 @@ public class S2JDBCTest extends S2TestCase {
 		player2.playerName = "山崎隆造";
 		player2.team = "カープ";
 		player2.position = null;
-        player2.description = "崇徳高校では3年春の甲子園で優勝（現・早稲田大学野球部監督の應武篤良は同期でチームメイト）。超高校級の遊撃手と騒がれ、1976年ドラフト1位で広島東洋カープに入団。";
+        player2.description = "崇徳高校では3年春の甲子園で優勝（現・早稲田*大学%野球部監督の應武篤良は同期でチームメイト）。超高校級の遊撃手と騒がれ、1976年ドラフト1位で広島東洋カープに入団。";
 		playerService.insert(player2);
 		userTransaction.commit();
 
@@ -61,7 +62,8 @@ public class S2JDBCTest extends S2TestCase {
 		assertEquals(2, playerList.size());
 		Player player = playerList.get(0);
 		assertEquals("Entityに値が入っている", "高橋慶彦", player.playerName);
-		assertEquals("日付が一致すること", now.getYear(), player.registeredAt.getYear());
+        //noinspection deprecation
+        assertEquals("日付が一致すること", now.getYear(), player.registeredAt.getYear());
         assertEquals("日付が一致すること", now.getMonth(), player.registeredAt.getMonth());
         assertEquals("日付が一致すること", now.getDate(), player.registeredAt.getDate());
 
@@ -74,6 +76,24 @@ public class S2JDBCTest extends S2TestCase {
 
 		player = playerService.find(1);
 		assertEquals("playerNameの値が更新されている", "野村謙二郎", player.playerName);
+
+        playerList = playerService.findByDescription("早稲田*大学%野球部");
+        assertEquals(1, playerList.size());
+        assertEquals("山崎隆造", playerList.get(0).playerName);
+
+        playerList = playerService.findByNameStartsWith("山崎");
+        assertEquals(1, playerList.size());
+        assertEquals("山崎隆造", playerList.get(0).playerName);
+
+        try {
+            playerService.findByNameContains("山崎");
+            fail();
+        } catch (Exception e) {}
+
+       try {
+            playerService.findByDescriptionStarts("崇徳高校");
+            fail();
+        } catch (Exception e) {}
 
 	}
 
